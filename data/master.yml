@@ -4,21 +4,19 @@ cv_record:
   status: "Initial draft requiring verification"
 
 identity:
-  full_name: "Naveen"
+  full_name: "Dr Naveen Suthar"
   credentials: ""
   designation: "Senior Resident"
   department: "Department of Community and Family Medicine"
   institution: "AIIMS Patna"
   location: "Patna, Bihar, India"
-  professional_summary: >-
-    Physician and public-health researcher with interests in clinical
-    epidemiology, systematic reviews, diagnostic test accuracy, applied
-    biostatistics, and reproducible research.
+  professional_summary: >- 
+    Physician and public-health researcher with interests in clinical epidemiology, systematic reviews, diagnostic test accuracy, applied biostatistics, and reproducible research.
 
 contact:
-  professional_email: ""
-  phone: ""
-  orcid: ""
+  professional_email: "aiims.drnaveen@gmail.com"
+  phone: "+91-797-674-5486"
+  orcid: "0009-0005-6171-8600"
   google_scholar: ""
   institutional_profile: ""
   github: "https://github.com/DrNaveen01"
@@ -26,15 +24,25 @@ contact:
 
 education:
   # Copy this entry and set include: true after confirming the details.
-  - degree: "Degree pending confirmation"
+  - degree: "MBBS"
     specialty: ""
-    institution: ""
+    institution: "All India Institute of Medical Sciences"
     university: ""
-    location: ""
-    start: ""
-    end: ""
+    location: "Patna"
+    start: "2015"
+    end: "2021"
     distinction: ""
-    include: false
+    include: true
+    
+  - degree: "MD"
+    specialty: "Community & Family Medicine"
+    institution: "All India Institute of Medical Sciences"
+    university: ""
+    location: "Patna"
+    start: "2023"
+    end: "2025"
+    distinction: ""
+    include: true
 
 appointments:
   - position: "Senior Resident"
@@ -48,9 +56,7 @@ appointments:
 
 research_projects:
   - title: >-
-      Burden, hospitalisation patterns, and financial implications of renal
-      and urological diseases: an analysis of large-scale claims-based
-      hospitalization data
+     Burden, hospitalisation patterns, and financial implications of renal and urological diseases: an analysis of large-scale claims-based hospitalization data
     short_name: "19 ACCESS Renal Health"
     role: "Methods and statistical lead"
     status: "Ongoing"
@@ -61,9 +67,8 @@ research_projects:
     include: true
 
   - title: >-
-      Diagnostic accuracy of point-of-care haemoglobin tests for detecting
-      anaemia in community and primary-care settings
-    role: "Methods and statistical lead"
+      Diagnostic accuracy of point-of-care haemoglobin tests for detecting anaemia in community and primary-care settings
+    role: "Methods and statistical lead, PI"
     status: "Systematic review in development"
     setting: "Diagnostic test accuracy systematic review"
     details:
@@ -181,14 +186,16 @@ skills:
       - "tidyverse"
       - "ggplot2"
       - "Quarto"
+      - "Jamovi"
+      - "SPSS"
     include: true
 
   - category: "Evidence synthesis"
     items:
       - "Systematic review and meta-analysis"
       - "Diagnostic test accuracy meta-analysis"
-      - "HSROC and bivariate models"
-      - "Risk-of-bias and certainty assessment"
+      # - "HSROC and bivariate models"
+      - "Risk-of-bias and certainty assessment using GRADE Framework"
     include: true
 
   - category: "Statistical methods"
@@ -197,6 +204,7 @@ skills:
       - "Mixed-effects models"
       - "Regression modelling"
       - "Repeated-measures analysis"
+      - "Generalized mixed effect models"
     include: true
 
   - category: "Research workflow"

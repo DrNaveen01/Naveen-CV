@@ -6,7 +6,7 @@ project:
 profile:
   default: html
   group:
-    - [html, word, typst, latex]
+    - [pdf, html, word, typst, latex]
 
 metadata-files:
   - data/master.yml
