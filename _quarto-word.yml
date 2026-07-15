@@ -1,0 +1,7 @@
+project:
+  output-dir: output/word
+
+format:
+  docx:
+    reference-doc: templates/word/cv-reference.docx
+

@@ -1,0 +1,23 @@
+# R and RStudio session files
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+.Renviron
+.Renviron.*
+
+# Quarto working files
+.quarto/
+_freeze/
+*_cache/
+*_files/
+
+# Generated CV outputs and visual-QA files
+output/
+tmp/
+
+# Office and operating-system temporary files
+~$*
+.DS_Store
+Thumbs.db
+

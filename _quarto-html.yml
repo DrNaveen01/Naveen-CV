@@ -1,0 +1,10 @@
+project:
+  output-dir: output/html
+
+format:
+  html:
+    embed-resources: true
+    theme: none
+    css: styles/cv.css
+    page-layout: full
+

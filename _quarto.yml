@@ -1,0 +1,20 @@
+project:
+  type: default
+  render:
+    - cv.qmd
+
+profile:
+  default: html
+  group:
+    - [html, word, typst, latex]
+
+metadata-files:
+  - data/master.yml
+
+filters:
+  - filters/cv.lua
+
+lang: en
+toc: false
+number-sections: false
+

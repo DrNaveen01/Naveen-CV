@@ -1,0 +1,17 @@
+project:
+  output-dir: output/latex
+
+format:
+  pdf:
+    pdf-engine: xelatex
+    documentclass: article
+    geometry:
+      - a4paper
+      - top=1.5cm
+      - bottom=1.5cm
+      - left=1.7cm
+      - right=1.7cm
+    fontsize: 10pt
+    colorlinks: true
+    keep-tex: true
+

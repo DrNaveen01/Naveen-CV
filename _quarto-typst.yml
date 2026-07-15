@@ -1,0 +1,11 @@
+project:
+  output-dir: output/typst
+
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 1.7cm
+      y: 1.5cm
+    fontsize: 10pt
+

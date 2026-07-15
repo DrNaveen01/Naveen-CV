@@ -1,0 +1,209 @@
+cv_record:
+  schema_version: "0.1.0"
+  last_updated: "2026-07-15"
+  status: "Initial draft requiring verification"
+
+identity:
+  full_name: "Naveen"
+  credentials: ""
+  designation: "Senior Resident"
+  department: "Department of Community and Family Medicine"
+  institution: "AIIMS Patna"
+  location: "Patna, Bihar, India"
+  professional_summary: >-
+    Physician and public-health researcher with interests in clinical
+    epidemiology, systematic reviews, diagnostic test accuracy, applied
+    biostatistics, and reproducible research.
+
+contact:
+  professional_email: ""
+  phone: ""
+  orcid: ""
+  google_scholar: ""
+  institutional_profile: ""
+  github: "https://github.com/DrNaveen01"
+  linkedin: ""
+
+education:
+  # Copy this entry and set include: true after confirming the details.
+  - degree: "Degree pending confirmation"
+    specialty: ""
+    institution: ""
+    university: ""
+    location: ""
+    start: ""
+    end: ""
+    distinction: ""
+    include: false
+
+appointments:
+  - position: "Senior Resident"
+    department: "Department of Community and Family Medicine"
+    institution: "AIIMS Patna"
+    location: "Patna, Bihar"
+    start: "2026"
+    end: "Present"
+    responsibilities: []
+    include: true
+
+research_projects:
+  - title: >-
+      Burden, hospitalisation patterns, and financial implications of renal
+      and urological diseases: an analysis of large-scale claims-based
+      hospitalization data
+    short_name: "19 ACCESS Renal Health"
+    role: "Methods and statistical lead"
+    status: "Ongoing"
+    setting: "Large-scale claims-based hospitalisation data"
+    details:
+      - "Development of the statistical analysis plan"
+      - "Advanced modelling using population-averaged and multilevel approaches"
+    include: true
+
+  - title: >-
+      Diagnostic accuracy of point-of-care haemoglobin tests for detecting
+      anaemia in community and primary-care settings
+    role: "Methods and statistical lead"
+    status: "Systematic review in development"
+    setting: "Diagnostic test accuracy systematic review"
+    details:
+      - "Planned HSROC and bivariate diagnostic-accuracy meta-analysis"
+    include: true
+
+  - title: >-
+      Association between multimorbidity and diabetes distress among adults
+      with type 2 diabetes mellitus
+    role: "Investigator and statistical lead"
+    status: "Concept development"
+    setting: "Rural and Urban Health Training Centres"
+    details:
+      - "Planned multicentre cross-sectional study"
+    include: true
+
+  - title: >-
+      Effect of chart-based counselling on glycaemic control, adherence, and
+      follow-up compliance among adults with diabetes mellitus
+    role: "Principal investigator"
+    status: "Protocol development"
+    setting: "Rural Health Training Centre"
+    details:
+      - "Randomized controlled trial"
+    include: true
+
+publications:
+  # Recommended fields: citation, doi, pmid, status and include.
+  - citation: "Publication details pending import from Zotero"
+    doi: ""
+    pmid: ""
+    status: "Pending"
+    include: false
+
+teaching:
+  - activity: "Resource person, Data Analysis Program for Resident Doctors"
+    short_name: "RDFC"
+    institution: "IMS Patna"
+    location: "Patna, Bihar"
+    date: "Two sessions; dates pending confirmation"
+    details:
+      - "Applied data analysis for resident doctors"
+    include: true
+
+  - activity: "Facilitator for online medical research workshops"
+    institution: "MedIndia"
+    location: "Online"
+    date: "Dates pending confirmation"
+    details: []
+    include: true
+
+workshops:
+  - title: "Systematic review and meta-analysis of intervention studies"
+    provider: "Cochrane"
+    date: "Date pending"
+    include: true
+
+  - title: "Systematic review and meta-analysis of diagnostic accuracy studies"
+    provider: "Cochrane"
+    date: "Date pending"
+    include: true
+
+  - title: "Infectious disease modelling using R"
+    provider: "Provider pending confirmation"
+    date: "Date pending"
+    include: true
+
+  - title: "Regression analysis in public health"
+    provider: "Provider pending confirmation"
+    date: "Date pending"
+    include: true
+
+  - title: "R programming and data analysis"
+    provider: "Provider pending confirmation"
+    date: "Date pending"
+    include: true
+
+  - title: "Flexible laryngoscopy workshop"
+    provider: "Provider pending confirmation"
+    date: "Date pending"
+    include: true
+
+  - title: "Organ transplantation workshop"
+    provider: "Indian Society of Organ Transplantation"
+    date: "Date pending"
+    include: true
+
+awards:
+  - title: "Conference awards and prizes"
+    organisation: "Details pending confirmation"
+    date: ""
+    description: ""
+    include: false
+
+professional_service:
+  - role: "Coordinator of public-health awareness activities"
+    organisation: "Details pending confirmation"
+    date: "Dates pending confirmation"
+    details:
+      - "Health-day observances and community awareness activities"
+    include: true
+
+memberships:
+  - organisation: "Professional membership pending confirmation"
+    role: "Member"
+    start: ""
+    end: ""
+    include: false
+
+skills:
+  - category: "Statistical computing"
+    items:
+      - "R"
+      - "RStudio"
+      - "tidyverse"
+      - "ggplot2"
+      - "Quarto"
+    include: true
+
+  - category: "Evidence synthesis"
+    items:
+      - "Systematic review and meta-analysis"
+      - "Diagnostic test accuracy meta-analysis"
+      - "HSROC and bivariate models"
+      - "Risk-of-bias and certainty assessment"
+    include: true
+
+  - category: "Statistical methods"
+    items:
+      - "Generalized estimating equations"
+      - "Mixed-effects models"
+      - "Regression modelling"
+      - "Repeated-measures analysis"
+    include: true
+
+  - category: "Research workflow"
+    items:
+      - "Git and GitHub"
+      - "Zotero"
+      - "Rayyan"
+      - "Reproducible reporting"
+    include: true
+

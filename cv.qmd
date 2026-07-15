@@ -1,0 +1,20 @@
+---
+cv-view:
+  name: "Full academic CV"
+  sections:
+    - appointments
+    - education
+    - research_projects
+    - publications
+    - teaching
+    - workshops
+    - awards
+    - professional_service
+    - memberships
+    - skills
+---
+
+<!--
+This file controls section selection and order only.
+Edit CV facts in data/master.yml.
+-->
