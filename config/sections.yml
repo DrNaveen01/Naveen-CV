@@ -1,0 +1,57 @@
+# Change or add sections without modifying filters/cv.lua.
+# layout: entry | skills | citation | list
+cv-sections:
+  appointments:
+    title: Professional Appointments
+    layout: entry
+    primary: [position]
+    secondary: [department, institution, university, location]
+    bullets: responsibilities
+  education:
+    title: Education
+    layout: entry
+    primary: [degree, specialty]
+    secondary: [department, institution, university, location]
+    details: [distinction]
+  research_projects:
+    title: Research Projects
+    layout: entry
+    primary: [title]
+    secondary: [role, status]
+    secondary_separator: "; "
+    details: [setting]
+    bullets: details
+  publications:
+    title: Publications
+    layout: citation
+  teaching:
+    title: Teaching and Resource-Person Experience
+    layout: entry
+    primary: [activity]
+    secondary: [department, institution, university, location]
+    bullets: details
+  workshops:
+    title: Selected Workshops and Training
+    layout: entry
+    primary: [title]
+    secondary: [provider]
+  awards:
+    title: Awards and Honours
+    layout: entry
+    primary: [title]
+    secondary: [organisation]
+    details: [description]
+  professional_service:
+    title: Professional and Public-Health Service
+    layout: entry
+    primary: [role]
+    secondary: [organisation]
+    bullets: details
+  memberships:
+    title: Professional Memberships
+    layout: entry
+    primary: [organisation]
+    secondary: [role]
+  skills:
+    title: Methods and Technical Skills
+    layout: skills
