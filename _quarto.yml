@@ -10,6 +10,7 @@ profile:
 
 metadata-files:
   - data/master.yml
+  - config/sections.yml
 
 filters:
   - filters/cv.lua
@@ -17,4 +18,3 @@ filters:
 lang: en
 toc: false
 number-sections: false
-
