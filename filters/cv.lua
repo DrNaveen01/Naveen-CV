@@ -1,429 +1,205 @@
--- Build a CV from data/master.yml using format-neutral Pandoc elements.
-
+-- Schema-driven CV renderer. Section field mappings live in config/sections.yml.
 local stringify = pandoc.utils.stringify
-
-local function value(x)
-  if x == nil then
-    return ""
-  end
+local function str(x)
+  if x == nil then return "" end
   return stringify(x)
 end
-
-local function present(x)
-  return x ~= nil and value(x) ~= ""
-end
-
-local function included(item)
-  if item == nil then
+local function has(x) return x ~= nil and str(x) ~= "" end
+local function enabled(item, view)
+  if item.include ~= nil and str(item.include) == "false" then return false end
+  if item.views ~= nil and #item.views > 0 then
+    for _, v in ipairs(item.views) do
+      if str(v) == view then return true end
+    end
     return false
   end
-  if item.include == nil then
-    return true
-  end
-  return value(item.include) ~= "false"
+  return true
 end
-
-local function add_space(inlines)
-  if #inlines > 0 then
-    table.insert(inlines, pandoc.Space())
-  end
-end
-
-local function append_text(inlines, text)
-  if text ~= nil and text ~= "" then
-    local parsed = pandoc.read(text, "markdown").blocks
-    if #parsed > 0 and parsed[1].content ~= nil then
-      for _, inline in ipairs(parsed[1].content) do
-        table.insert(inlines, inline)
-      end
-    else
-      table.insert(inlines, pandoc.Str(text))
+local function inlines(text)
+  local s = str(text)
+  if s == "" then return {} end
+  local parsed = pandoc.read(s, "markdown")
+  local result = pandoc.List({})
+  for _, block in ipairs(parsed.blocks) do
+    if block.content then
+      if #result > 0 then result:insert(pandoc.Space()) end
+      for _, el in ipairs(block.content) do result:insert(el) end
     end
   end
+  return result
 end
-
-local function append_separator(inlines, separator)
-  if #inlines > 0 then
-    table.insert(inlines, pandoc.Space())
-    table.insert(inlines, pandoc.Str(separator))
-    table.insert(inlines, pandoc.Space())
+local function styled(content, style, class)
+  return pandoc.Div({pandoc.Para(content)}, pandoc.Attr("", {class}, {["custom-style"]=style}))
+end
+local function join_fields(item, keys, separator)
+  local values = {}
+  for _, key in ipairs(keys or {}) do
+    if has(item[str(key)]) then values[#values+1] = str(item[str(key)]) end
   end
+  return table.concat(values, separator or ", ")
 end
-
-local function styled_para(inlines, style_name, class_name)
-  local attr = pandoc.Attr(
-    "",
-    {class_name},
-    {["custom-style"] = style_name}
-  )
-  return pandoc.Div({pandoc.Para(inlines)}, attr)
-end
-
-local function plain_inlines(text)
-  local out = {}
-  append_text(out, text)
-  return out
-end
-
 local function period(item)
-  if present(item.date) then
-    return value(item.date)
-  end
-
-  local start_date = value(item.start)
-  local end_date = value(item["end"])
-
-  if start_date ~= "" and end_date ~= "" then
-    return start_date .. "–" .. end_date
-  elseif start_date ~= "" then
-    return start_date
-  else
-    return end_date
+  if has(item.date) then return str(item.date) end
+  local start, finish = str(item.start), str(item["end"])
+  if start ~= "" and finish ~= "" then return start .. "–" .. finish end
+  if start ~= "" then return start end
+  return finish
+end
+local function add_separator(out, sep)
+  if #out > 0 then
+    out:insert(pandoc.Space())
+    out:insert(pandoc.Str(sep))
+    out:insert(pandoc.Space())
   end
 end
-
-local function entry_heading(primary, secondary, date_text)
-  local inlines = {}
-
-  if primary ~= "" then
-    table.insert(inlines, pandoc.Strong(plain_inlines(primary)))
+local function add_content(out, source)
+  for _, el in ipairs(source) do out:insert(el) end
+end
+local function heading(item, spec)
+  local primary = join_fields(item, spec.primary or {}, str(spec.primary_separator) ~= "" and str(spec.primary_separator) or ", ")
+  local secondary = join_fields(item, spec.secondary or {}, str(spec.secondary_separator) ~= "" and str(spec.secondary_separator) or ", ")
+  if has(spec.date_field) and has(item[str(spec.date_field)]) then
+    -- Explicit date field override
   end
-
+  local date_text = (spec.show_date ~= nil and str(spec.show_date) == "false") and "" or period(item)
+  if primary == "" and secondary == "" and date_text == "" then return nil end
+  local content = pandoc.List({})
+  if primary ~= "" then content:insert(pandoc.Strong(inlines(primary))) end
   if secondary ~= "" then
-    append_separator(inlines, "·")
-    table.insert(inlines, pandoc.Emph(plain_inlines(secondary)))
+    add_separator(content, "·")
+    content:insert(pandoc.Emph(inlines(secondary)))
   end
-
   if date_text ~= "" then
-    append_separator(inlines, "|")
-    append_text(inlines, date_text)
+    add_separator(content, "|")
+    add_content(content, inlines(date_text))
   end
-
-  return styled_para(inlines, "CV Entry", "cv-entry")
-end
-
-local function detail_para(text)
-  return styled_para(plain_inlines(text), "CV Detail", "cv-detail")
-end
-
-local function detail_list(items)
-  local output = {}
-  if items == nil then
-    return output
-  end
-
-  local bullets = {}
-  for _, item in ipairs(items) do
-    local text = value(item)
-    if text ~= "" then
-      table.insert(bullets, {pandoc.Plain(plain_inlines(text))})
+  if has(spec.link) and has(item[str(spec.link)]) and primary ~= "" then
+    content = pandoc.List({})
+    content:insert(pandoc.Strong({pandoc.Link(inlines(primary), str(item[str(spec.link)]))}))
+    if secondary ~= "" then
+      add_separator(content, "·")
+      content:insert(pandoc.Emph(inlines(secondary)))
+    end
+    if date_text ~= "" then
+      add_separator(content, "|")
+      add_content(content, inlines(date_text))
     end
   end
-
-  if #bullets > 0 then
-    table.insert(output, pandoc.BulletList(bullets))
+  return styled(content, "CV Entry", "cv-entry")
+end
+local function bullets(items)
+  local list = {}
+  for _, v in ipairs(items or {}) do
+    if has(v) then list[#list+1] = {pandoc.Plain(inlines(v))} end
   end
-  return output
+  if #list == 0 then return nil end
+  return pandoc.BulletList(list)
 end
-
-local function add_blocks(target, source)
-  for _, block in ipairs(source) do
-    table.insert(target, block)
-  end
-end
-
-local function institution_line(item)
-  local parts = {}
-  for _, key in ipairs({"department", "institution", "university", "location"}) do
-    if present(item[key]) then
-      table.insert(parts, value(item[key]))
-    end
-  end
-  return table.concat(parts, ", ")
-end
-
-local function section_header(title)
-  return pandoc.Header(1, plain_inlines(title), pandoc.Attr("", {"cv-section"}))
-end
-
-local function render_appointments(items)
+local function render_item(item, spec)
   local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      table.insert(blocks, entry_heading(
-        value(item.position),
-        institution_line(item),
-        period(item)
-      ))
-      add_blocks(blocks, detail_list(item.responsibilities))
+  local mode = str(spec.layout)
+  if mode == "skills" then
+    local category = str(item.category)
+    local values = {}
+    for _, v in ipairs(item.items or {}) do
+      if has(v) then values[#values+1] = str(v) end
+    end
+    if category ~= "" or #values > 0 then
+      local content = pandoc.List({})
+      if category ~= "" then
+        content:insert(pandoc.Strong(inlines(category .. ":")))
+        content:insert(pandoc.Space())
+      end
+      add_content(content, inlines(table.concat(values, ", ")))
+      blocks[#blocks+1] = styled(content, "CV Detail", "cv-skill")
+    end
+  elseif mode == "citation" then
+    local content = pandoc.List(inlines(item.citation))
+    if has(item.doi) then
+      add_separator(content, "·")
+      content:insert(pandoc.Link({pandoc.Str("DOI")}, "https://doi.org/" .. str(item.doi)))
+    end
+    if #content > 0 then
+      blocks[#blocks+1] = styled(content, "CV Detail", "cv-publication")
+    end
+  elseif mode == "list" then
+    local content = inlines(item[str(spec.text_field or "title")])
+    if #content > 0 then blocks[#blocks+1] = styled(content, "CV Detail", "cv-detail") end
+  else
+    local entry = heading(item, spec)
+    if entry then blocks[#blocks+1] = entry end
+    for _, key in ipairs(spec.details or {}) do
+      if has(item[str(key)]) then
+        blocks[#blocks+1] = styled(inlines(item[str(key)]), "CV Detail", "cv-detail")
+      end
+    end
+    if has(spec.bullets) then
+      local list = bullets(item[str(spec.bullets)])
+      if list then blocks[#blocks+1] = list end
     end
   end
   return blocks
 end
-
-local function render_education(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      local degree = value(item.degree)
-      if present(item.specialty) then
-        degree = degree .. ", " .. value(item.specialty)
-      end
-      table.insert(blocks, entry_heading(degree, institution_line(item), period(item)))
-      if present(item.distinction) then
-        table.insert(blocks, detail_para(value(item.distinction)))
-      end
+local function render_identity(meta)
+  local result = {}
+  local id = meta.identity or {}
+  result[#result+1] = styled(inlines(id.full_name), "CV Name", "cv-name")
+  local headline = join_fields(id, {"credentials","designation","department","institution","location"}, " · ")
+  if headline ~= "" then result[#result+1] = styled(inlines(headline), "CV Headline", "cv-headline") end
+  local contact = meta.contact or {}
+  local parts = pandoc.List({})
+  local function add(label, value, url)
+    if not has(value) then return end
+    add_separator(parts, "·")
+    if url ~= "" then
+      parts:insert(pandoc.Link(inlines(label), url))
+    else
+      add_content(parts, inlines(value))
     end
   end
-  return blocks
+  local email = str(contact.professional_email)
+  add(email, email, email ~= "" and ("mailto:" .. email) or "")
+  add(str(contact.phone), contact.phone, has(contact.phone) and ("tel:" .. str(contact.phone):gsub("[^%d+]","")) or "")
+  local orcid = str(contact.orcid)
+  if orcid ~= "" and not orcid:match("^https?://") then orcid = "https://orcid.org/" .. orcid end
+  add("ORCID", contact.orcid, orcid)
+  for _, key in ipairs({"google_scholar","institutional_profile","github","linkedin"}) do
+    local labels = {google_scholar="Google Scholar",institutional_profile="Institutional profile",github="GitHub",linkedin="LinkedIn"}
+    add(labels[key], contact[key], str(contact[key]))
+  end
+  if #parts > 0 then result[#result+1] = styled(parts, "CV Contact", "cv-contact") end
+  if has(id.professional_summary) then
+    result[#result+1] = styled(inlines(id.professional_summary), "CV Summary", "cv-summary")
+  end
+  return result
 end
-
-local function render_research(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      local secondary = value(item.role)
-      if present(item.status) then
-        if secondary ~= "" then
-          secondary = secondary .. "; " .. value(item.status)
-        else
-          secondary = value(item.status)
+function Pandoc(doc)
+  local meta = doc.meta
+  local view = meta["cv-view"] or {}
+  local view_name = str(view.name)
+  local specs = meta["cv-sections"] or {}
+  local requested = view.sections or {}
+  local blocks = render_identity(meta)
+  for _, rawkey in ipairs(requested) do
+    local key = str(rawkey)
+    local spec = specs[key]
+    if spec == nil then
+      io.stderr:write("CV warning: no configuration for section '" .. key .. "'\n")
+    else
+      local entries = meta[key] or {}
+      local section_blocks = {}
+      for _, item in ipairs(entries) do
+        if enabled(item, view_name) then
+          for _, block in ipairs(render_item(item, spec)) do
+            section_blocks[#section_blocks+1] = block
+          end
         end
       end
-      table.insert(blocks, entry_heading(value(item.title), secondary, ""))
-      if present(item.setting) then
-        table.insert(blocks, detail_para(value(item.setting)))
-      end
-      add_blocks(blocks, detail_list(item.details))
-    end
-  end
-  return blocks
-end
-
-local function render_publications(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      local citation = plain_inlines(value(item.citation))
-      if present(item.doi) then
-        append_separator(citation, "·")
-        table.insert(citation, pandoc.Link(
-          {pandoc.Str("DOI")},
-          "https://doi.org/" .. value(item.doi)
-        ))
-      end
-      table.insert(blocks, styled_para(citation, "CV Detail", "cv-publication"))
-    end
-  end
-  return blocks
-end
-
-local function render_teaching(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      local secondary = institution_line(item)
-      table.insert(blocks, entry_heading(value(item.activity), secondary, period(item)))
-      add_blocks(blocks, detail_list(item.details))
-    end
-  end
-  return blocks
-end
-
-local function render_workshops(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      table.insert(blocks, entry_heading(
-        value(item.title),
-        value(item.provider),
-        period(item)
-      ))
-    end
-  end
-  return blocks
-end
-
-local function render_awards(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      table.insert(blocks, entry_heading(
-        value(item.title),
-        value(item.organisation),
-        period(item)
-      ))
-      if present(item.description) then
-        table.insert(blocks, detail_para(value(item.description)))
+      if #section_blocks > 0 then
+        blocks[#blocks+1] = pandoc.Header(1, inlines(spec.title or key), pandoc.Attr("", {"cv-section"}))
+        for _, block in ipairs(section_blocks) do blocks[#blocks+1] = block end
       end
     end
   end
-  return blocks
-end
-
-local function render_service(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      table.insert(blocks, entry_heading(
-        value(item.role),
-        value(item.organisation),
-        period(item)
-      ))
-      add_blocks(blocks, detail_list(item.details))
-    end
-  end
-  return blocks
-end
-
-local function render_memberships(items)
-  local blocks = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      table.insert(blocks, entry_heading(
-        value(item.organisation),
-        value(item.role),
-        period(item)
-      ))
-    end
-  end
-  return blocks
-end
-
-local function render_skills(items)
-  local inlines = {}
-  for _, item in ipairs(items or {}) do
-    if included(item) then
-      if #inlines > 0 then
-        table.insert(inlines, pandoc.LineBreak())
-      end
-      table.insert(inlines, pandoc.Strong(plain_inlines(value(item.category) .. ":")))
-      add_space(inlines)
-      local skill_values = {}
-      for _, skill in ipairs(item.items or {}) do
-        table.insert(skill_values, value(skill))
-      end
-      append_text(inlines, table.concat(skill_values, ", "))
-    end
-  end
-
-  if #inlines == 0 then
-    return {}
-  end
-
-  return {styled_para(inlines, "CV Detail", "cv-skill")}
-end
-
-local renderers = {
-  appointments = {title = "Professional Appointments", fn = render_appointments},
-  education = {title = "Education", fn = render_education},
-  research_projects = {title = "Research Projects", fn = render_research},
-  publications = {title = "Publications", fn = render_publications},
-  teaching = {title = "Teaching and Resource-Person Experience", fn = render_teaching},
-  workshops = {title = "Selected Workshops and Training", fn = render_workshops},
-  awards = {title = "Awards and Honours", fn = render_awards},
-  professional_service = {title = "Professional and Public-Health Service", fn = render_service},
-  memberships = {title = "Professional Memberships", fn = render_memberships},
-  skills = {title = "Methods and Technical Skills", fn = render_skills}
-}
-
-local function contact_inlines(contact)
-  local items = {}
-
-  local function add_contact(label, text, target)
-    if text == "" then
-      return
-    end
-    if #items > 0 then
-      append_separator(items, "·")
-    end
-    if target ~= nil and target ~= "" then
-      table.insert(items, pandoc.Link({pandoc.Str(label)}, target))
-    else
-      append_text(items, text)
-    end
-  end
-
-  if contact == nil then
-    return items
-  end
-
-  local email = value(contact.professional_email)
-  add_contact(email, email, email ~= "" and ("mailto:" .. email) or "")
-  add_contact("ORCID", value(contact.orcid), value(contact.orcid))
-  add_contact("Google Scholar", value(contact.google_scholar), value(contact.google_scholar))
-  add_contact("Institutional profile", value(contact.institutional_profile), value(contact.institutional_profile))
-  add_contact("GitHub", value(contact.github), value(contact.github))
-  add_contact("LinkedIn", value(contact.linkedin), value(contact.linkedin))
-
-  return items
-end
-
-local function render_identity(meta)
-  local blocks = {}
-  local identity = meta.identity or {}
-
-  table.insert(blocks, styled_para(
-    plain_inlines(value(identity.full_name)),
-    "CV Name",
-    "cv-name"
-  ))
-
-  local headline = {}
-  for _, key in ipairs({"credentials", "designation", "department", "institution", "location"}) do
-    if present(identity[key]) then
-      if #headline > 0 then
-        append_separator(headline, "·")
-      end
-      append_text(headline, value(identity[key]))
-    end
-  end
-  if #headline > 0 then
-    table.insert(blocks, styled_para(headline, "CV Headline", "cv-headline"))
-  end
-
-  local contacts = contact_inlines(meta.contact)
-  if #contacts > 0 then
-    table.insert(blocks, styled_para(contacts, "CV Contact", "cv-contact"))
-  end
-
-  if present(identity.professional_summary) then
-    table.insert(blocks, styled_para(
-      plain_inlines(value(identity.professional_summary)),
-      "CV Summary",
-      "cv-summary"
-    ))
-  end
-
-  return blocks
-end
-
-local function requested_sections(meta)
-  local view = meta["cv-view"] or {}
-  if view.sections ~= nil then
-    return view.sections
-  end
-  return {
-    "appointments", "education", "research_projects", "publications",
-    "teaching", "workshops", "awards", "professional_service",
-    "memberships", "skills"
-  }
-end
-
-function Pandoc(doc)
-  local blocks = render_identity(doc.meta)
-
-  for _, section_meta in ipairs(requested_sections(doc.meta)) do
-    local key = value(section_meta)
-    local renderer = renderers[key]
-    if renderer ~= nil then
-      local content = renderer.fn(doc.meta[key])
-      if #content > 0 then
-        table.insert(blocks, section_header(renderer.title))
-        add_blocks(blocks, content)
-      end
-    end
-  end
-
-  return pandoc.Pandoc(blocks, doc.meta)
+  return pandoc.Pandoc(blocks, meta)
 end
