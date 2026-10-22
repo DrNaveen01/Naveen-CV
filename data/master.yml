@@ -11,7 +11,7 @@ identity:
   institution: "AIIMS Patna"
   location: "Patna, Bihar, India"
   professional_summary: >- 
-    Physician and public-health researcher with interests in clinical epidemiology, systematic reviews, diagnostic test accuracy, applied biostatistics, and reproducible research.
+    Physician and public-health researcher with interests in clinical epidemiology, public health nutrition, systematic reviews, diagnostic test accuracy, applied biostatistics, and reproducible research.
 
 contact:
   professional_email: "aiims.drnaveen@gmail.com"
@@ -22,17 +22,9 @@ contact:
   github: "https://github.com/DrNaveen01"
   linkedin: ""
 
+
 education:
   # Copy this entry and set include: true after confirming the details.
-  - degree: "MBBS"
-    specialty: ""
-    institution: "All India Institute of Medical Sciences"
-    university: ""
-    location: "Patna"
-    start: "2015"
-    end: "2021"
-    distinction: ""
-    include: true
     
   - degree: "MD"
     specialty: "Community & Family Medicine"
@@ -43,16 +35,47 @@ education:
     end: "2025"
     distinction: ""
     include: true
-
+    
+  - degree: "MBBS"
+    specialty: ""
+    institution: "All India Institute of Medical Sciences"
+    university: ""
+    location: "Patna"
+    start: "2015"
+    end: "2021"
+    distinction: ""
+    include: true
+    
 appointments:
   - position: "Senior Resident"
     department: "Department of Community and Family Medicine"
-    institution: "AIIMS Patna"
+    institution: "AIIMS"
     location: "Patna, Bihar"
     start: "2026"
     end: "Present"
     responsibilities: []
     include: true
+    
+    
+  - position: "Junior Resident"
+    department: "Department of Community and Family Medicine"
+    institution: "AIIMS"
+    location: "Patna, Bihar"
+    start: "2023"
+    end: "2026"
+    responsibilities: []
+    include: true
+    
+  - position: "Junior Resident"
+    department: "Trauma & Emergency"
+    institution: "AIIMS"
+    location: "Patna, Bihar"
+    start: "2022"
+    end: "2022"
+    responsibilities: []
+    include: true
+       
+
 
 research_projects:
   - title: >-
@@ -64,7 +87,7 @@ research_projects:
     details:
       - "Development of the statistical analysis plan"
       - "Advanced modelling using population-averaged and multilevel approaches"
-    include: true
+    include: false
 
   - title: >-
       Diagnostic accuracy of point-of-care haemoglobin tests for detecting anaemia in community and primary-care settings
@@ -73,7 +96,7 @@ research_projects:
     setting: "Diagnostic test accuracy systematic review"
     details:
       - "Planned HSROC and bivariate diagnostic-accuracy meta-analysis"
-    include: true
+    include: false
 
   - title: >-
       Association between multimorbidity and diabetes distress among adults
@@ -83,7 +106,7 @@ research_projects:
     setting: "Rural and Urban Health Training Centres"
     details:
       - "Planned multicentre cross-sectional study"
-    include: true
+    include: false
 
   - title: >-
       Effect of chart-based counselling on glycaemic control, adherence, and
@@ -93,7 +116,7 @@ research_projects:
     setting: "Rural Health Training Centre"
     details:
       - "Randomized controlled trial"
-    include: true
+    include: false
 
 publications:
   # Recommended fields: citation, doi, pmid, status and include.
@@ -103,65 +126,99 @@ publications:
     status: "Pending"
     include: false
 
+
+couses:
+  - title: "Resident Doctor's Foundation Course: Part-3"
+    provider: "AIIMS Patna"
+    date: "April 2025"
+    include: true
+  - title: "Resident Doctor's Foundation Course: Part-1"
+    provider: "AIIMS Patna"
+    date: "January 2023"
+    include: true
+
 teaching:
-  - activity: "Resource person, Data Analysis Program for Resident Doctors"
-    short_name: "RDFC"
-    institution: "IMS Patna"
+  - activity: "Resource person in Resident Doctor's Foundation Course: Part-3"
+    short_name: "RDFC-3"
+    institution: "AIIMS"
     location: "Patna, Bihar"
-    date: "Two sessions; dates pending confirmation"
+    date: "Three sessions, April-May 2026"
     details:
       - "Applied data analysis for resident doctors"
+    include: true
+
+  - activity: "Resource person in Resident Doctor's Foundation Course: Part-2"
+    short_name: "RDFC-2"
+    institution: "AIIMS"
+    location: "Patna, Bihar"
+    date: "Two sessions, October 2025"
+    details:
+      - "Research protocol development"
     include: true
 
   - activity: "Facilitator for online medical research workshops"
     institution: "MedIndia"
     location: "Online"
     date: "Dates pending confirmation"
-    details: []
-    include: true
+    details: ["Get certificates for all those workshops"]
+    include: false
 
 workshops:
-  - title: "Systematic review and meta-analysis of intervention studies"
-    provider: "Cochrane"
-    date: "Date pending"
+  - title: "NUtrition Research Course to Translate and Utilize REsearch (NURTURE) Regional Training Capsule, Bihar"
+    provider: ["AIIMS Patna", "Collage of Community science, Dr Rajendra Prasad Central Agriculture University, Pusa", "St. John's Research Institute, Bangalore", "UNICEF"]
+    date: "July 2026"
     include: true
-
-  - title: "Systematic review and meta-analysis of diagnostic accuracy studies"
-    provider: "Cochrane"
-    date: "Date pending"
+    
+  - title: "Workshop of systematic review/meta analysis on diagnostic test accuracy (DTA)"
+    provider: ["Cochrane-TRC-KGMU, Lucknow", "ICMR-NIRT"]
+    date: "July 2026"
+    
+  - title: "Infectious Disease Modelling using R Software"
+    provider: "AIIMS Deoghar"
+    date: "May 2026"
     include: true
-
-  - title: "Infectious disease modelling using R"
-    provider: "Provider pending confirmation"
-    date: "Date pending"
+    
+  - title: "Data driven solutions: Harnessing regression modelling for public health & applied science"
+    provider: "EFICON, KGMU, Lucknow"
+    date: "November 2024"
     include: true
-
-  - title: "Regression analysis in public health"
-    provider: "Provider pending confirmation"
-    date: "Date pending"
+    
+  - title: "National Workshop on Advanced Health Data Analytics using R Programming"
+    provider: "AIIMS Mangalgiri"
+    date: "October 2024"
     include: true
-
-  - title: "R programming and data analysis"
-    provider: "Provider pending confirmation"
-    date: "Date pending"
-    include: true
-
-  - title: "Flexible laryngoscopy workshop"
-    provider: "Provider pending confirmation"
-    date: "Date pending"
-    include: true
-
-  - title: "Organ transplantation workshop"
-    provider: "Indian Society of Organ Transplantation"
-    date: "Date pending"
-    include: true
+    
+  - title: "Clinical training workshop - Flexible Ureteroscopy"
+    provider: "AIIMS Patna"
+    date: "September 2022"
+    include: true 
+    
+  - title: "Indian Society of Organ Transplantation (ISOT) Mid Term CME (Patna)"
+    provider: "Mid Term ISOT Patna"
+    date: "March 2022"
+    include: false
 
 awards:
-  - title: "Conference awards and prizes"
-    organisation: "Details pending confirmation"
-    date: ""
-    description: ""
+  - title: "First Position in Poster Presentation"
+    organisation: "IAPSMBRCON2025, NMSH Sasaram"
+    date: "February 2025"
+    description: "Presented poster titled 'Estimation of prevalence and factors associated with developmental delay in U-5 population in selected slums of urban Patna: An analytical cross sectional study "
+    include: true
+    
+    
+paper-presented:
+  - title: "First Position in Poster Presentation"
+    organisation: "IAPSMBRCON2025, NMSH Sasaram"
+    date: "February 2025"
+    description: "Presented poster titled 'Estimation of prevalence and factors associated with developmental delay in U-5 population in selected slums of urban Patna: An analytical cross sectional study "
     include: false
+    
+conferences:    
+  - title: "First Position in Poster Presentation"
+    organisation: "IAPSMBRCON2025, NMSH Sasaram"
+    date: "February 2025"
+    description: "Presented poster titled 'Estimation of prevalence and factors associated with developmental delay in U-5 population in selected slums of urban Patna: An analytical cross sectional study "
+    include: true
 
 professional_service:
   - role: "Coordinator of public-health awareness activities"
@@ -169,7 +226,7 @@ professional_service:
     date: "Dates pending confirmation"
     details:
       - "Health-day observances and community awareness activities"
-    include: true
+    include: false
 
 memberships:
   - organisation: "Professional membership pending confirmation"
@@ -186,6 +243,7 @@ skills:
       - "tidyverse"
       - "ggplot2"
       - "Quarto"
+      - "Latex2e"
       - "Jamovi"
       - "SPSS"
     include: true
@@ -213,5 +271,6 @@ skills:
       - "Zotero"
       - "Rayyan"
       - "Reproducible reporting"
+
     include: true
 

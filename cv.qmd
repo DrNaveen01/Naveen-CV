@@ -4,11 +4,14 @@ cv-view:
   sections:
     - appointments
     - education
+    - courses
     - research_projects
     - publications
     - teaching
     - workshops
     - awards
+    - paper-presented
+    - conferences
     - professional_service
     - memberships
     - skills
