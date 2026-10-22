@@ -19,7 +19,7 @@ local function inlines(text)
   local s = str(text)
   if s == "" then return {} end
   local parsed = pandoc.read(s, "markdown")
-  local result = {}
+  local result = pandoc.List({})
   for _, block in ipairs(parsed.blocks) do
     if block.content then
       if #result > 0 then result:insert(pandoc.Space()) end
